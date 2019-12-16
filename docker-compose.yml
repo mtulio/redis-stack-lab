@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+
+    insights:
+      image: redislabs/redisinsight
+      ports:
+        - "8001:8001"
+      volumes: []
+        #- redisinsight:/db
+      restart: on-failure
+      depends_on:
+        - graph
+        - search
+        - timeseries
+        - cache0
+        - cluster0-00
+        - cluster0-01
+
+    graph:
+      image: redislabs/redisgraph
+      ports:
+        - "6380:6379"
+      restart: on-failure
+
+    search:
+      image: redislabs/redisearch:latest
+      ports:
+        - "6381:6379"
+      restart: on-failure
+
+    timeseries:
+      image: redislabs/redistimeseries
+      ports:
+        - "6382:6379"
+      restart: on-failure
+
+    cache0:
+      image: redislabs/redis
+      ports:
+        - "6300:6379"
+      restart: on-failure
+
+    cluster0-00:
+      image: redislabs/redis
+      ports:
+        - "6390:6379"
+      restart: on-failure
+
+    cluster0-01:
+      image: redislabs/redis
+      ports:
+        - "6391:6379"
+      restart: on-failure
